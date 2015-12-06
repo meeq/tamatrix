@@ -1,7 +1,11 @@
 OBJS:=main.o
 TARGET:=tamaserver
-LDFLAGS:=-lrt
 CFLAGS:=-ggdb
+
+UNAME_S := $(shell uname -s)
+ifneq ($(UNAME_S),Darwin)
+    LDFLAGS:=-lrt
+endif
 
 $(TARGET): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^
