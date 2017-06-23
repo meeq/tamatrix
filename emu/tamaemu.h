@@ -165,6 +165,7 @@ typedef struct {
 } Tamagotchi;
 
 
+void tamaDumpHw(M6502 *cpu);
 unsigned char **loadRoms(char *dir);
 void freeRoms(unsigned char **roms);
 Tamagotchi *tamaInit(unsigned char **rom, char *eepromFile);

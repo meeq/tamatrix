@@ -12,5 +12,6 @@ typedef struct {
 } I2cEeprom;
 
 I2cEeprom *i2ceepromInit(char *filename);
+void i2ceepromDeinit(I2cEeprom *e);
 
 #endif

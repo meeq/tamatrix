@@ -10,15 +10,14 @@
 
 #include <sys/time.h>
 #include <time.h>
-#include "stdio.h"
-#include "tamaemu.h"
-#include "udp.h"
+#include <stdio.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/select.h>
 #include <string.h>
 
+#include "tamaemu.h"
 #include "lcd.h"
 #include "benevolentai.h"
 #include "udp.h"
@@ -72,6 +71,8 @@ int main(int argc, char **argv) {
 	char *host="127.0.0.1";
 	char *romdir="rom";
 	struct timespec tstart, tend;
+	uint8_t *dram;
+	int sizex, sizey;
 	Display display;
 	int err=0;
 
@@ -108,12 +109,15 @@ int main(int argc, char **argv) {
 	signal(SIGHUP, sighupHdlr);
 	rom=loadRoms(romdir);
 	tama=tamaInit(rom, eeprom);
+	dram=(uint8_t *)tama->dram;
 	benevolentAiInit();
 	udpInit(host);
 	while(1) {
 		clock_gettime(CLOCK_MONOTONIC, &tstart);
 		tamaRun(tama, FCPU/FPS-1);
-		lcdRender(tama->dram, tama->lcd.sizex, tama->lcd.sizey, &display);
+		sizex=tama->lcd.sizex;
+		sizey=tama->lcd.sizey;
+		lcdRender(dram, sizex, sizey, &display);
 		udpTick();
 		if (aiEnabled) {
 			k=benevolentAiRun(&display, 1000/FPS);
@@ -128,7 +132,7 @@ int main(int argc, char **argv) {
 		}
 		if ((k&8)) {
 			//If anything interesting happens, make a LCD dump.
-			lcdDump(tama->dram, tama->lcd.sizex, tama->lcd.sizey, "lcddump.lcd");
+			lcdDump(dram, sizex, sizey, "lcddump.lcd");
 			if (stopDisplay) {
 				tama->cpu->Trace=1;
 				speedup=0;

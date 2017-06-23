@@ -3,6 +3,7 @@
 
 #include "lcd.h"
 
+void benevolentAiDump();
 void benevolentAiInit();
 int benevolentAiRun(Display *lcd, int mspassed);
 int benevolentAiMacroRun(char *name);

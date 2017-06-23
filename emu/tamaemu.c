@@ -83,7 +83,8 @@ void tamaDumpHw(M6502 *cpu) {
 unsigned char **loadRoms(char *dir) {
 	char fname[128];
 	unsigned char **roms;
-	int i, l;
+	int i;
+//	int l;
 	int noLoaded=0;
 	FILE *f;
 	long len;
@@ -111,7 +112,8 @@ unsigned char **loadRoms(char *dir) {
 				//Dump of only the page.
 				fseek(f, 0, SEEK_SET);
 			}
-			l=fread(roms[i], 1, 32768, f);
+			fread(roms[i], 1, 32768, f);
+//			l=fread(roms[i], 1, 32768, f);
 //			printf("ROM loaded: %s - %d bytes\n", fname, l);
 //			printf("%x %x\n", roms[i][0x3ffc], roms[i][0x3ffd]);
 			fclose(f);
@@ -544,7 +546,6 @@ Tamagotchi *tamaInit(unsigned char **rom, char *eepromFile) {
 }
 
 void tamaRun(Tamagotchi *tama, int cycles) {
-	int i;
 	while (cycles>0) cycles-=tamaHwTick(tama, 128);
 }
 
