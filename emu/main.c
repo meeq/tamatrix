@@ -17,6 +17,10 @@
 #include <sys/select.h>
 #include <string.h>
 
+#ifdef __MACH__
+#include "mach_gettime.h"
+#endif
+
 #include "tamaemu.h"
 #include "lcd.h"
 #include "benevolentai.h"

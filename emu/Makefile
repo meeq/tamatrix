@@ -3,7 +3,9 @@ OBJS := main.o tamaemu.o i2c.o i2ceeprom.o lcd.o benevolentai.o lcdmatch.o scree
 		ir.o udp.o
 
 UNAME_S := $(shell uname -s)
-ifneq ($(UNAME_S),Darwin)
+ifeq ($(UNAME_S),Darwin)
+OBJS += mach_gettime.o
+else
 LDFLAGS := -lrt
 ifneq ($(shell $(CC) -v 2>&1 | grep -c "clang version"), 1)
 LDFLAGS += -lgcc
